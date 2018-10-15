@@ -3,9 +3,10 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using log4net;
+using log4net.Core;
 using TestAPI.DAL;
 using TestAPI.DAL.Models;
-using Serilog;
 
 namespace TestAPI.Controllers
 {
@@ -15,16 +16,13 @@ namespace TestAPI.Controllers
             new AdventureWorksContext(
                 System.Configuration.ConfigurationManager.ConnectionStrings["Default"].ConnectionString);
 
-        private ILogger _logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            .WriteTo.File("logs\\log.txt", rollingInterval: RollingInterval.Minute)
-            .CreateLogger();
+        private ILog _log = LogManager.GetLogger(typeof(ProductsController));
 
         // GET api/products
         public string Get()
         {
             var serializedObject = JsonConvert.SerializeObject(_dbContext.Products.ToList());
-            _logger.Information("Get products");
+            _log.Debug("Get products");
             return serializedObject;
         }
 
@@ -33,7 +31,7 @@ namespace TestAPI.Controllers
         {
             var product = _dbContext.Products.Find(id);
             var serializedObject = "null";
-            _logger.Information("Get product");
+            _log.Debug("Get product");
             if (product != null)
             {
                 serializedObject = JsonConvert.SerializeObject(product);
@@ -50,7 +48,7 @@ namespace TestAPI.Controllers
                 Name = productName ?? "test"
             };
 
-            _logger.Information("Post product");
+            _log.Debug("Post product");
             product = _dbContext.Products.Add(product);
             _dbContext.SaveChanges();
 
@@ -66,7 +64,7 @@ namespace TestAPI.Controllers
                 product.Name = name ?? "test2";
                 _dbContext.SaveChanges();
             }
-            _logger.Information("Put product");
+            _log.Debug("Put product");
 
             return JsonConvert.SerializeObject(product);
         }
@@ -80,7 +78,7 @@ namespace TestAPI.Controllers
                 _dbContext.Products.Remove(product);
                 _dbContext.SaveChanges();
             }
-            _logger.Information("Delete product");
+            _log.Debug("Delete product");
 
             HttpResponseMessage httpResponseMessage = Request.CreateResponse(HttpStatusCode.OK);
             return httpResponseMessage;
