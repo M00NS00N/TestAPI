@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net.Config;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -20,6 +21,21 @@ namespace TestAPI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             log4net.Config.XmlConfigurator.Configure();
+            //var azureAppender = AzureAppender.New(conf =>
+            //{
+            //    conf.Level = "Debug";
+            //    conf.ConfigureRepository((repo, mapper) =>
+            //    {
+            //        repo.Threshold = mapper("Debug");
+            //    });
+
+            //    conf.ConfigureAzureDiagnostics(diagn =>
+            //    {
+
+            //    });
+            //});
+
+            //BasicConfigurator.Configure(azureAppender);
         }
     }
 }

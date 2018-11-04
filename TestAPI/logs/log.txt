@@ -1,0 +1,1 @@
+DEBUG 2018-11-04 22:59:56,027 40117ms Log4NetSampleLogger    Debug              - Get products
