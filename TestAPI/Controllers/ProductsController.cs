@@ -28,7 +28,7 @@ namespace TestAPI.Controllers
             new AdventureWorksContext(
                 System.Configuration.ConfigurationManager.ConnectionStrings["Default"].ConnectionString);
 
-        private ILog _log = new Log4NetSampleLogger();
+        private ILog _log = LogManager.GetLogger(typeof(ProductsController));
 
         private CloudStorageAccount _storageAccount = new CloudStorageAccount(
             new Microsoft.WindowsAzure.Storage.Auth.StorageCredentials(
