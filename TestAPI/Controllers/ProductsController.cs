@@ -19,6 +19,8 @@ using System.Web.Hosting;
 using System.IO;
 using System.Reflection;
 using System;
+using log4net.Appender;
+using log4net.Repository.Hierarchy;
 
 namespace TestAPI.Controllers
 {
@@ -48,6 +50,15 @@ namespace TestAPI.Controllers
             var product = _dbContext.Products.Find(id);
             var serializedObject = "null";
             _log.Debug("Get product");
+            foreach (IAppender appender in (_log.Logger as Logger).Appenders)
+            {
+                var buffered = appender as BufferingAppenderSkeleton;
+                if (buffered != null)
+                {
+                    buffered.Flush();
+                }
+            }
+
             if (product != null)
             {
                 serializedObject = JsonConvert.SerializeObject(product);
